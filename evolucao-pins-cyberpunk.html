@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<title>Evolução dos Pins Cyberpunk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&family=Unbounded:wght@500;700&display=swap">
+<style>
+/* Layout: relatório de uma página. Números grandes no topo, dois gráficos, depois tabelas e o que foi feito. */
+:root {
+  --bg: #f4f7ef; --surface: #ffffff; --ink: #142010; --muted: #4f5f48; --line: #d3dcc8;
+  --pink: #d4145a; --green: #6bb52f; --green-ink: #2f6b10; --blue: #3a67c4; --bad: #b3123f;
+  --font-display: "Unbounded", "Arial Black", system-ui, sans-serif;
+  --font-body: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1a0d; --surface: #162313; --ink: #eaf3e2; --muted: #9db290; --line: #2a3b25;
+    --pink: #ff5c93; --green: #8ad24a; --green-ink: #a6e070; --blue: #7ea6ff; --bad: #ff7a9c; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1a0d; --surface: #162313; --ink: #eaf3e2; --muted: #9db290; --line: #2a3b25;
+  --pink: #ff5c93; --green: #8ad24a; --green-ink: #a6e070; --blue: #7ea6ff; --bad: #ff7a9c; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.55;
+  padding-block: 32px 72px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 68rem; margin-inline: auto; display: flex; flex-direction: column; gap: 64px; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 700; line-height: 1.12; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+h1 { font-size: clamp(2rem, 6vw, 3.2rem); }
+h2 { font-size: clamp(1.25rem, 3vw, 1.7rem); }
+p { margin: 0; }
+.eyebrow { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.lede { font-size: 1.12rem; max-width: 56ch; color: var(--muted); }
+.muted { color: var(--muted); }
+.note { font-size: 0.9rem; color: var(--muted); max-width: 72ch; }
+header { display: flex; flex-direction: column; gap: 18px; }
+section { display: flex; flex-direction: column; gap: 20px; }
+.sec-head { display: flex; flex-direction: column; gap: 8px; max-width: 62ch; }
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr)); gap: 16px; }
+.stat { border-top: 3px solid var(--ink); padding-top: 12px; display: flex; flex-direction: column; gap: 2px; }
+.stat b { font-family: var(--font-display); font-weight: 500; font-size: 2rem; font-variant-numeric: tabular-nums; }
+.stat b.bad { color: var(--bad); }
+.stat span { color: var(--muted); font-size: 0.9rem; }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 20px; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr)); gap: 16px; }
+.chart { position: relative; min-height: 14rem; }
+.chart.tall { min-height: 18rem; }
+.tipbox { position: absolute; pointer-events: none; background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 4px 8px; font-size: 0.8rem; white-space: nowrap; z-index: 2; }
+.reading { margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 10px; }
+
+.tbl { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 0.88rem; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--muted); font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; font-weight: 500; }
+td.num, th.num { text-align: right; }
+tbody tr:last-child td { border-bottom: 0; }
+
+.done { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.done li { display: grid; grid-template-columns: 5rem minmax(0, 1fr); gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.done li:last-child { border-bottom: 0; }
+.ok { font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--green-ink); }
+.done b { font-weight: 500; }
+.done .why { display: block; color: var(--muted); font-size: 0.92rem; margin-top: 2px; }
+details { color: var(--muted); font-size: 0.88rem; }
+details summary { cursor: pointer; color: var(--ink); }
+details summary:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+details p { margin-top: 10px; max-width: 72ch; }
+@media (max-width: 40rem) { .done li { grid-template-columns: 1fr; gap: 2px; } .wrap { gap: 48px; } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <span class="eyebrow">Relatório · 6 de novembro de 2026</span>
+    <h1>Evolução dos Pins Cyberpunk</h1>
+    <p class="lede">Nos últimos 30 dias os Pins somaram 39 impressões e nenhum clique de saída para a Etsy. O alcance é pequeno e ainda não leva ninguém ao anúncio. Este relatório mostra o que mudou nos Pins e no anúncio e o que os números permitem concluir.</p>
+  </header>
+
+  <section>
+    <div class="stats">
+      <div class="stat"><b>39</b><span>Impressões</span></div>
+      <div class="stat"><b>7</b><span>Engajamentos</span></div>
+      <div class="stat"><b class="bad">0</b><span>Cliques de saída</span></div>
+      <div class="stat"><b>1</b><span>Pins salvos</span></div>
+      <div class="stat"><b>11</b><span>Público total</span></div>
+    </div>
+    <p class="note">Pinterest Analytics, visão geral orgânica, de 7 de out. a 6 de nov. de 2026. Dias em UTC; os números de hoje são estimativas em tempo real.</p>
+  </section>
+
+  <section class="card">
+    <div class="sec-head">
+      <h2>Impressões por dia</h2>
+      <p class="note">A maioria dos dias fecha em zero. As linhas tracejadas marcam o que mudou no anúncio da Etsy e nos Pins. A última barra é um dia parcial e aparece mais clara.</p>
+    </div>
+    <div class="chart tall" id="chart-days" role="img" aria-label="Gráfico de barras das impressões por dia, de 7 de outubro a 6 de novembro de 2026"></div>
+  </section>
+
+  <section class="grid2">
+    <div class="card">
+      <div class="sec-head">
+        <h2>Impressões por Pin</h2>
+        <p class="note">Antes e depois da troca de títulos e descrições. “Antes” é o levantamento da manhã de 6 de nov.</p>
+      </div>
+      <div class="chart" id="chart-pins" role="img" aria-label="Barras com as impressões de cada Pin antes e depois dos novos textos"></div>
+    </div>
+    <div class="card">
+      <div class="sec-head"><h2>O que o dado diz, e o que não diz</h2></div>
+      <ul class="reading">
+        <li>Não houve clique de saída no período inteiro, inclusive entre 11 e 26 de outubro, quando o anúncio ainda estava ativo. A expiração do anúncio explica só os últimos dias.</li>
+        <li>Houve cliques no Pin, mas ninguém passou para a Etsy. A pessoa abre o Pin e não segue para o anúncio.</li>
+        <li>O salto de hoje coincide com a renovação do anúncio e a troca dos textos. É um dia parcial e sem grupo de comparação, então não prova que a troca causou o aumento.</li>
+        <li>O Pin de arte solta teve mais cliques no Pin do que o Pin com mockup. A amostra é pequena demais para dizer que um formato vence o outro.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="sec-head">
+      <h2>Os quatro Pins</h2>
+      <p class="note">Os cliques no Pin são do levantamento inicial e ainda não foram atualizados depois das mudanças.</p>
+    </div>
+    <div class="tbl"><table>
+      <thead><tr><th>Pin</th><th>Foco</th><th>Título atual</th><th>Título anterior</th><th class="num">Imp. antes</th><th class="num">Imp. depois</th><th class="num">Cliques no Pin</th></tr></thead>
+      <tbody id="pins-body"></tbody>
+    </table></div>
+  </section>
+
+  <section class="card">
+    <div class="sec-head">
+      <h2>Os Pins agora estão em pastas temáticas</h2>
+      <p class="note">Antes, os quatro Pins ficavam em uma única pasta genérica. Cada pasta nova tem um tema que alguém realmente digitaria na busca.</p>
+    </div>
+    <div class="tbl"><table>
+      <thead><tr><th>Pasta</th><th>Pins</th><th>Por que esse tema</th></tr></thead>
+      <tbody>
+        <tr><td>Cyberpunk Wall Art</td><td>Tattoo Flash Sheet; Alien &amp; Astronaut</td><td>Reúne as artes de estética cyberpunk e sci-fi retrô, o tema central do anúncio.</td></tr>
+        <tr><td>Tattoo Flash Art</td><td>Old School Tattoo</td><td>Público que busca estilo tattoo flash, com intenção diferente de quem busca decoração.</td></tr>
+        <tr><td>Gaming Room &amp; Geek Decor</td><td>Gaming Room (mockup)</td><td>Público que decora quarto gamer, home office e espaços geek.</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">As pastas foram criadas só com o nome, sem descrição. Cada uma tem ainda um ou dois Pins, e o efeito desse arranjo na busca ainda não foi medido.</p>
+  </section>
+
+  <section class="card">
+    <div class="sec-head">
+      <h2>O que pesquisamos para chegar a esses ajustes</h2>
+      <p class="note">Cada ajuste veio de uma verificação concreta. Abaixo, o que olhamos, o que encontramos e o que mudou.</p>
+    </div>
+    <div class="tbl"><table>
+      <thead><tr><th>O que pesquisamos</th><th>O que encontramos</th><th>O que mudou por causa disso</th></tr></thead>
+      <tbody>
+        <tr><td>Números do Pinterest Analytics (30 dias)</td><td>Poucas impressões e nenhum clique de saída para a Etsy, mesmo nos dias em que o anúncio estava ativo.</td><td>O foco deixou de ser só “postar mais” e passou a incluir o que a pessoa vê e para onde o Pin leva.</td></tr>
+        <tr><td>Situação do anúncio na Etsy</td><td>O anúncio estava expirado desde 26 de outubro, então o link dos quatro Pins levava a uma página inativa.</td><td>Renovamos o mesmo anúncio (mesmo endereço), e os links dos Pins voltaram a funcionar.</td></tr>
+        <tr><td>Guia oficial de vendedores da Etsy</td><td>A Etsy orienta: dizer logo no início o que é o produto, não repetir palavras no título, usar as 13 tags com frases naturais e colocar a palavra-chave cedo na descrição.</td><td>Reescrevemos o título, a 13ª tag e a descrição do anúncio seguindo essas orientações.</td></tr>
+        <tr><td>Política de propriedade intelectual da Etsy</td><td>Nomes de marcas de terceiros em título, tags ou descrição podem gerar problemas. A arte traz um carro de uma marca conhecida.</td><td>Os textos descrevem a arte sem citar marcas.</td></tr>
+        <tr><td>Texto dos Pins</td><td>Títulos quase iguais entre si, uma descrição copiada do anúncio em todos, marcas de formatação soltas e um “Copiar título” colado em um título.</td><td>Cada Pin ganhou título e descrição próprios, curtos e limpos, com um ângulo de busca diferente.</td></tr>
+        <tr><td>Promessa do texto versus o que é entregue</td><td>Pins e anúncio falavam em vários arquivos e tamanhos, mas o anúncio entrega 1 arquivo JPG.</td><td>Todos os textos agora dizem “1 arquivo JPG” e que outras proporções saem sob pedido, por mensagem. Assim ninguém compra esperando mais do que recebe.</td></tr>
+        <tr><td>Organização dos Pins</td><td>Os quatro Pins estavam em uma única pasta genérica.</td><td>Criamos três pastas por tema. Esta é uma boa prática geral do Pinterest e entra como teste: ainda não temos dado da loja que comprove ganho.</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">O que ainda não foi pesquisado: volume de busca por palavra-chave, tendências de mercado e o que concorrentes fazem. Esses pontos dependem de ferramentas ou dados que ainda não usamos, e por isso não aparecem como conclusão.</p>
+  </section>
+
+  <section class="card">
+    <div class="sec-head"><h2>O que foi feito</h2></div>
+    <ul class="done">
+      <li><span class="ok">Feito</span><div><b>Anúncio expirado na Etsy.</b><span class="why">Os links dos Pins levavam a um anúncio inativo. Renovamos o mesmo anúncio, então os links voltaram a valer.</span></div></li>
+      <li><span class="ok">Feito</span><div><b>Texto sujo nos Pins.</b><span class="why">Um título trazia “Copiar título” colado e as descrições mostravam marcas de formatação. Foram corrigidos.</span></div></li>
+      <li><span class="ok">Feito</span><div><b>Mesma descrição copiada do anúncio em todos os Pins.</b><span class="why">Cada Pin agora tem descrição curta e própria, com a palavra-chave logo no início.</span></div></li>
+      <li><span class="ok">Feito</span><div><b>Títulos quase iguais competindo pela mesma busca.</b><span class="why">Cada Pin ganhou um ângulo: tattoo flash, ilustração old school, alien e astronauta, quarto gamer.</span></div></li>
+      <li><span class="ok">Feito</span><div><b>Uma única pasta para tudo.</b><span class="why">Os Pins foram separados em três pastas por tema: Cyberpunk Wall Art, Tattoo Flash Art e Gaming Room &amp; Geek Decor.</span></div></li>
+      <li><span class="ok">Feito</span><div><b>Anúncio prometia mais arquivos do que entregava.</b><span class="why">A descrição do anúncio e as dos quatro Pins agora dizem que vai um arquivo JPG e que outras proporções saem sob pedido, por mensagem.</span></div></li>
+    </ul>
+    <p class="note">Reavaliar daqui a duas ou três semanas. Só vale concluir algo quando houver algumas centenas de impressões.</p>
+  </section>
+
+  <details>
+    <summary>Fontes e limites</summary>
+    <p>As pesquisas citadas acima combinam os dados da própria loja com o guia de vendedores e as políticas da Etsy. Os totais e os dados por Pin vêm da visão geral do Pinterest Analytics. Os valores diários foram lidos do gráfico de impressões e somam o total informado pela plataforma. Os números por Pin “antes” e “depois” são dois levantamentos feitos no mesmo dia, em horários diferentes. O Pinterest informa que os dados são estimativas e que os dias podem variar até a consolidação.</p>
+  </details>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+(function () {
+  var DAYS = [["2026-10-07",0],["2026-10-08",0],["2026-10-09",0],["2026-10-10",0],["2026-10-11",11],["2026-10-12",0],["2026-10-13",0],["2026-10-14",0],["2026-10-15",0],["2026-10-16",0],["2026-10-17",0],["2026-10-18",0],["2026-10-19",1],["2026-10-20",0],["2026-10-21",3],["2026-10-22",0],["2026-10-23",0],["2026-10-24",0],["2026-10-25",0],["2026-10-26",0],["2026-10-27",4],["2026-10-28",0],["2026-10-29",2],["2026-10-30",0],["2026-10-31",0],["2026-11-01",0],["2026-11-02",2],["2026-11-03",0],["2026-11-04",0],["2026-11-05",0],["2026-11-06",16]];
+  var EVENTS = [["2026-10-26", "Anúncio expira na Etsy"], ["2026-11-06", "Anúncio renovado e textos atualizados"]];
+  var PINS = [
+    ["P1", "Tattoo Flash Sheet", "Retro Cyberpunk Tattoo Flash Sheet | Digital Download Wall Art", "Retro Cyberpunk Art Print | Sci-Fi Wall Decor", 9, 13, 4],
+    ["P2", "Old School Tattoo", "Old School Tattoo Flash Art Print | Retro Sci-Fi Printable Poster", "Retro Futuristic Art Print | Colorful Cyberpunk Illustration Copiar título", 8, 11, 0],
+    ["P3", "Alien & Astronaut", "Printable Sci-Fi Poster | Retro Futuristic Alien & Astronaut Art", "Retro Cyberpunk Art Print | Futuristic Sci-Fi Illustration", 7, 9, 1],
+    ["P4", "Gaming Room (mockup)", "Gaming Room Wall Art | Retro Cyberpunk Printable Decor", "Sci-Fi Wall Art | Retro Cyberpunk Room Decor", 3, 6, 1]
+  ];
+  var MES = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  function fd(s) { var p = s.split('-').map(Number); return p[2] + ' ' + MES[p[1] - 1]; }
+  function sub(sel) { return sel.attr('style', 'fill: var(--muted); font-size: 11px'); }
+
+  var tb = document.getElementById('pins-body');
+  PINS.forEach(function (r, i) {
+    var tr = document.createElement('tr');
+    r.forEach(function (v, c) {
+      var td = document.createElement('td');
+      if (c >= 4) td.className = 'num';
+      td.textContent = v;
+      tr.appendChild(td);
+    });
+    tb.appendChild(tr);
+  });
+
+  function drawDays() {
+    var el = document.getElementById('chart-days');
+    el.replaceChildren();
+    var rows = DAYS.map(function (r) { return { d: r[0], n: r[1] }; });
+    var W = Math.max(280, el.clientWidth), H = 300, m = { t: 50, r: 10, b: 28, l: 30 };
+    var x = d3.scaleBand().domain(rows.map(function (r) { return r.d; })).range([m.l, W - m.r]).paddingInner(0.25);
+    var y = d3.scaleLinear().domain([0, d3.max(rows, function (r) { return r.n; }) || 1]).nice().range([H - m.b, m.t]);
+    var svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', '0 0 ' + W + ' ' + H);
+    var yt = y.ticks(4);
+    svg.append('g').selectAll('line').data(yt).join('line')
+      .attr('x1', m.l).attr('x2', W - m.r).attr('y1', y).attr('y2', y).attr('style', 'stroke: var(--line); stroke-width: 1');
+    sub(svg.append('g').selectAll('text').data(yt).join('text')
+      .attr('x', m.l - 6).attr('y', function (t) { return y(t) + 4; }).attr('text-anchor', 'end').text(function (t) { return t; }));
+    var tip = d3.select(el).append('div').attr('class', 'tipbox').style('display', 'none');
+    var last = rows.length - 1;
+    svg.append('g').selectAll('rect').data(rows).join('rect')
+      .attr('x', function (r) { return x(r.d); }).attr('width', x.bandwidth())
+      .attr('y', function (r) { return y(r.n); }).attr('height', function (r) { return y(0) - y(r.n); })
+      .attr('rx', 2)
+      .attr('style', function (r, i) { return 'fill: var(--green)' + (i === last ? '; opacity: .5' : ''); })
+      .on('pointermove', function (e, r) {
+        var i = rows.indexOf(r);
+        tip.style('display', 'block').text(fd(r.d) + ': ' + r.n + (r.n === 1 ? ' impressão' : ' impressões') + (i === last ? ' (dia parcial)' : ''));
+        var box = el.getBoundingClientRect(), w = tip.node().offsetWidth;
+        tip.style('left', Math.max(0, Math.min(el.clientWidth - w, e.clientX - box.left - w / 2)) + 'px')
+          .style('top', Math.max(0, e.clientY - box.top - 40) + 'px');
+      })
+      .on('pointerleave', function () { tip.style('display', 'none'); });
+    svg.append('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y(0)).attr('y2', y(0)).attr('style', 'stroke: var(--muted); stroke-width: 1');
+    sub(svg.append('g').selectAll('text').data(rows.filter(function (r, i) { return i % 5 === 0; })).join('text')
+      .attr('x', function (r) { return x(r.d) + x.bandwidth() / 2; }).attr('y', H - 8).attr('text-anchor', 'middle').text(function (r) { return fd(r.d); }));
+    EVENTS.forEach(function (ev, i) {
+      if (x(ev[0]) === undefined) return;
+      var cx = x(ev[0]) + x.bandwidth() / 2, ly = 14 + i * 16;
+      svg.append('line').attr('x1', cx).attr('x2', cx).attr('y1', ly + 4).attr('y2', y(0))
+        .attr('style', 'stroke: var(--pink); stroke-width: 1; stroke-dasharray: 3 3');
+      sub(svg.append('text').attr('y', ly).attr('text-anchor', 'end')
+        .attr('x', Math.min(cx + x.bandwidth() / 2, W - m.r)).text(fd(ev[0]) + ' · ' + ev[1]));
+    });
+  }
+
+  function drawPins() {
+    var el = document.getElementById('chart-pins');
+    el.replaceChildren();
+    var rows = PINS.map(function (r) { return { k: r[1], a: r[4], b: r[5] }; });
+    var W = Math.max(280, el.clientWidth);
+    var svg = d3.select(el).append('svg').attr('width', '100%');
+    var lw = 0;
+    rows.forEach(function (r) {
+      var t = sub(svg.append('text').text(r.k));
+      lw = Math.max(lw, t.node().getComputedTextLength());
+      t.remove();
+    });
+    var m = { t: 30, r: 34, b: 4, l: Math.ceil(lw) + 12 }, rowH = 44, H = m.t + rows.length * rowH + m.b;
+    svg.attr('viewBox', '0 0 ' + W + ' ' + H);
+    var mx = d3.max(rows, function (r) { return Math.max(r.a, r.b); }) || 1;
+    var x = d3.scaleLinear().domain([0, mx]).range([m.l, W - m.r]);
+    var lg = svg.append('g');
+    lg.append('rect').attr('x', m.l).attr('y', 6).attr('width', 10).attr('height', 10).attr('rx', 2).attr('style', 'fill: var(--line)');
+    var t1 = sub(lg.append('text').attr('x', m.l + 14).attr('y', 15).text('Antes'));
+    var off = m.l + 14 + t1.node().getComputedTextLength() + 16;
+    lg.append('rect').attr('x', off).attr('y', 6).attr('width', 10).attr('height', 10).attr('rx', 2).attr('style', 'fill: var(--green)');
+    sub(lg.append('text').attr('x', off + 14).attr('y', 15).text('Depois'));
+    rows.forEach(function (r, i) {
+      var y0 = m.t + i * rowH;
+      sub(svg.append('text').attr('x', m.l - 8).attr('y', y0 + 22).attr('text-anchor', 'end').text(r.k));
+      [[r.a, 'fill: var(--line)', 4], [r.b, 'fill: var(--green)', 22]].forEach(function (s) {
+        svg.append('rect').attr('x', m.l).attr('y', y0 + s[2] - 2).attr('width', Math.max(0, x(s[0]) - m.l)).attr('height', 14).attr('rx', 2).attr('style', s[1]);
+        sub(svg.append('text').attr('x', x(s[0]) + 5).attr('y', y0 + s[2] + 9).text(s[0]));
+      });
+    });
+  }
+
+  function draw() { drawDays(); drawPins(); }
+  draw();
+  var t;
+  window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(draw, 120); });
+})();
+</script>
+</body>
+</html>
